@@ -11,7 +11,5 @@ import java.util.Optional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
 
-    List<Post> findPostIgnoringCase(String title);
-
-    Optional<Post> findByTitle(String title);
+    List<Post> findByTitle(String title);
 }
