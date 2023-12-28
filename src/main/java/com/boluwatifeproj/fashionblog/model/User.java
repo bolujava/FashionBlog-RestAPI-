@@ -20,42 +20,30 @@ import java.util.Collections;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "user-seq", initialValue = 2000)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "user-seq")
     @JsonIgnore
     private Long id;
     @Column(unique = true)
     private String username;
     private String firstName;
     private String lastName;
-    @Getter
+
     private String password;
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUserRole(Role userRole) {
-        this.userRole = userRole;
-    }
-
-    @Getter
     @Enumerated(value = EnumType.STRING)
     private Role userRole;
-
 
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<>(Collections.singleton(new SimpleGrantedAuthority(this.userRole.name())));
     }
-
     @Override
     @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
-
     @Override
     @JsonIgnore
     public boolean isAccountNonLocked() {
