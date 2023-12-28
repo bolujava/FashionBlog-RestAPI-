@@ -1,9 +1,7 @@
 package com.boluwatifeproj.fashionblog.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.aot.generate.GeneratedTypeReference;
 
@@ -11,9 +9,6 @@ import javax.annotation.processing.Generated;
 import java.util.Date;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "post")
 public class Post {
     @Id
@@ -23,6 +18,21 @@ public class Post {
     private Long id;
     @Column(name = "title")
     private String title;
+
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Column(name = "content")
     private String content;
 

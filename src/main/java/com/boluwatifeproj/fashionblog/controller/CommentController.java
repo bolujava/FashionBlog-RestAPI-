@@ -1,7 +1,9 @@
 package com.boluwatifeproj.fashionblog.controller;
 
 import com.boluwatifeproj.fashionblog.model.Comment;
+import com.boluwatifeproj.fashionblog.service.CommentService;
 import com.boluwatifeproj.fashionblog.service.CommentServiceImpl;
+import com.boluwatifeproj.fashionblog.service.PostService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -10,23 +12,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Data
 @RestController
-@RequestMapping("/comment")
 public class CommentController {
 
-    private CommentServiceImpl commentService;
-    @Autowired
-    public CommentController(CommentServiceImpl commentService) {
+    private CommentService commentService;
+    private PostService postService;
+
+    public CommentController(CommentService commentService, PostService postService) {
         this.commentService = commentService;
+        this.postService = postService;
     }
-    @PostMapping("/post-comment/{title}")
-    public ResponseEntity <Comment> createCommentByTitle(@PathVariable String title, @RequestBody Comment comment){
-        return commentService.createCommentByTitle(title, comment);
-    }
-    public ResponseEntity <List<Comment>> getAllComments(Comment comment){
-        return commentService.getAllComments(comment);
-
-    }
-
 }
