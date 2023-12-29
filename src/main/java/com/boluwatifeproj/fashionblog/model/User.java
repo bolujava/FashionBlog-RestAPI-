@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-
 @Entity
+@Table(name = "app_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,16 +21,17 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "user-seq")
     @JsonIgnore
     private Long id;
-    @Column(unique = true)
+    @Column(name = "user_name", unique = true, nullable = false)
     private String username;
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-
+    @Column(name = "password", nullable = false)
     private String password;
-
+    @Column(name = "role", nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Role userRole;
 

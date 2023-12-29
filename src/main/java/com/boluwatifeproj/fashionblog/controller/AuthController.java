@@ -1,6 +1,7 @@
 package com.boluwatifeproj.fashionblog.controller;
 
 import com.boluwatifeproj.fashionblog.dto.UserDto;
+import com.boluwatifeproj.fashionblog.model.User;
 import com.boluwatifeproj.fashionblog.service.UserServiceImpl;
 import com.boluwatifeproj.fashionblog.utils.JwtUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
