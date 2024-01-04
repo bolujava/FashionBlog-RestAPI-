@@ -1,6 +1,7 @@
 package com.boluwatifeproj.fashionblog.service;
 
 import com.boluwatifeproj.fashionblog.exception.PostNotFoundException;
+import com.boluwatifeproj.fashionblog.model.Comment;
 import com.boluwatifeproj.fashionblog.model.Post;
 import org.springframework.http.ResponseEntity;
 
@@ -11,6 +12,6 @@ public interface PostService {
     ResponseEntity<List<Post>> getAllPosts();
     ResponseEntity <Post> editPostById(Long id, Post newPost) throws PostNotFoundException;
     ResponseEntity<Post> getPostById(Long id);
-    ResponseEntity<String> deletePostById(Long id) throws Throwable;
+    ResponseEntity<Void> deletePostById(Long id) throws Throwable;
     ResponseEntity <List<Post>> getPostByTitle(String title);
 }

@@ -43,7 +43,7 @@ public class PostController {
         return postService.getPostByTitle(title);
     }
     @DeleteMapping("/delete-post/{id}")
-    public ResponseEntity<String> deletePostById(@PathVariable("id") Long id) throws Throwable {
+    public ResponseEntity<Void> deletePostById(@PathVariable("id") Long id) throws Throwable {
         return postService.deletePostById(id);
     }
 }
