@@ -21,7 +21,6 @@ public class CommentServiceImpl implements CommentService{
         this.commentRepository = commentRepository;
         this.postRepository = postRepository;
     }
-
     @Override
     public ResponseEntity<Comment> postComment(Long id, Comment comment) {
         Optional<Post> postOptional = postRepository.findById(id);
@@ -33,18 +32,32 @@ public class CommentServiceImpl implements CommentService{
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
     }
     @Override
     public ResponseEntity<Comment> editComment(Long id, Comment newComment) {
         Optional<Comment> commentOptional = commentRepository.findById(id);
         if (commentOptional.isPresent()){
-            Comment editedComment = commentRepository.save(newComment);
+            Comment existingComment = commentOptional.get();
+            existingComment.setText(newComment.getText());
+            Comment editedComment = commentRepository.save(existingComment);
             return new ResponseEntity<>(editedComment, HttpStatus.CREATED);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+//    @Override
+//    public ResponseEntity<Post> editPostById(Long id, Post newPost) {
+//        Optional<Post> optionalPost = postRepository.findById(id);
+//        if (optionalPost.isPresent()){
+//            Post existingPost = optionalPost.get();
+//            existingPost.setTitle(newPost.getTitle());
+//            existingPost.setContent(newPost.getContent());
+//            Post savedPost = postRepository.save(existingPost);
+//            return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
+//        }else{
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
     @Override
     public ResponseEntity<List<Comment>> getAllComment() {
        List<Comment> commentList = commentRepository.findAll();

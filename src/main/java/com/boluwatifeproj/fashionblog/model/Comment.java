@@ -20,7 +20,6 @@ import java.util.Date;
 
         @Column(name = "text")
         private String text;
-
     @Column(name = "post_date")
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

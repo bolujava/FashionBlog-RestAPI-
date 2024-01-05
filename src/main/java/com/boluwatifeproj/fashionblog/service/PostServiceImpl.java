@@ -3,6 +3,7 @@ package com.boluwatifeproj.fashionblog.service;
 import com.boluwatifeproj.fashionblog.exception.PostNotFoundException;
 import com.boluwatifeproj.fashionblog.model.Post;
 import com.boluwatifeproj.fashionblog.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,27 +13,30 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService{
+    private final PostRepository postRepository;
+    @Autowired
     public PostServiceImpl(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
-    private PostRepository postRepository;
     @Override
     public ResponseEntity<Post> savePost(Post post) {
-        return new ResponseEntity<>(post, HttpStatus.CREATED);
+        Post post1 = postRepository.save(post);
+        return new ResponseEntity<>(post1, HttpStatus.CREATED);
     }
     @Override
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> postList = postRepository.findAll();
-        return new ResponseEntity<>(postList, HttpStatus.FOUND);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
     }
     @Override
     public ResponseEntity<Post> editPostById(Long id, Post newPost) {
-        Optional<Post> post = postRepository.findById(id);
-        if (post.isPresent()){
-            Post post1 = post.get();
-            post1.setTitle(newPost.getTitle());
-            post1.setContent(newPost.getContent());
-            return new ResponseEntity<>(post1, HttpStatus.CREATED);
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isPresent()){
+            Post existingPost = optionalPost.get();
+            existingPost.setTitle(newPost.getTitle());
+            existingPost.setContent(newPost.getContent());
+            Post savedPost = postRepository.save(existingPost);
+            return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -40,18 +44,15 @@ public class PostServiceImpl implements PostService{
     @Override
     public ResponseEntity<Post> getPostById(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
-        if (optionalPost.isPresent()) {
-            return new ResponseEntity<>(optionalPost.get(), HttpStatus.FOUND);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return optionalPost.map(post -> new ResponseEntity<>(post, HttpStatus.FOUND))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     @Override
     public ResponseEntity <Void> deletePostById(Long id){
         Optional<Post> post = postRepository.findById(id);
         if (post.isPresent()){
             postRepository.deleteById(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok().build();
         }else{
             return ResponseEntity.notFound().build();
         }
@@ -60,7 +61,7 @@ public class PostServiceImpl implements PostService{
     public ResponseEntity<List<Post>> getPostByTitle(String title) {
         List<Post> posts = postRepository.findByTitle(title);
         if (!posts.isEmpty()){
-            return new ResponseEntity<>(posts, HttpStatus.FOUND);
+            return new ResponseEntity<>(posts, HttpStatus.OK);
         }else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

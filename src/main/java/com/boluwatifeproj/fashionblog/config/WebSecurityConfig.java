@@ -53,7 +53,16 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(httpRequests->
                         httpRequests
                                 .requestMatchers("/api/v1/sign-up", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api/v1/google/**", "/v3/api-docs.yaml",
-                                        "/api/v1/login" ).permitAll()
+                                        "/api/v1/login",
+                                        "/api/save-post",
+                                        "/api/all-post",
+                                        "/api/edit-post/{id}",
+                                        "/api/get-post-title",
+                                        "/api/get-post/{id}",
+                                        "/api/delete-post/{id}",
+                                        "/api/comments/post-comment/{id}",
+                                        "/api/comments/edit-comment/{id}",
+                                        "/api/comments/get-all-comments").permitAll()
                                 .requestMatchers("/api/v1/index").authenticated())
                 .sessionManagement(sessionManagement->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -3,6 +3,7 @@ package com.boluwatifeproj.fashionblog.controller;
 import com.boluwatifeproj.fashionblog.exception.PostNotFoundException;
 import com.boluwatifeproj.fashionblog.model.Post;
 import com.boluwatifeproj.fashionblog.service.PostService;
+import com.boluwatifeproj.fashionblog.service.PostServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class PostController {
-    private PostService postService;
+    private final PostService postService;
+
+//    private PostServiceImpl postServiceImpl;
     @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
@@ -20,7 +23,6 @@ public class PostController {
     @PostMapping("/save-post")
     public ResponseEntity<Post> savePost(@RequestBody Post post){
         return postService.savePost(post);
-
     }
     @GetMapping("/all-post")
     public ResponseEntity<List<Post>> getAllPosts(){
@@ -35,11 +37,11 @@ public class PostController {
         }
     }
     @GetMapping("/get-post/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable("id") Long id){
+    public ResponseEntity<Post> getPostById(@PathVariable(name = "id") Long id){
         return postService.getPostById(id);
     }
-    @GetMapping("/get-post-title/{title}")
-    public ResponseEntity<List<Post>> getPostByTitle(@PathVariable("title") String title){
+    @GetMapping("/get-post-title")
+    public ResponseEntity<List<Post>> getPostByTitle(@RequestParam(name = "title") String title){
         return postService.getPostByTitle(title);
     }
     @DeleteMapping("/delete-post/{id}")
