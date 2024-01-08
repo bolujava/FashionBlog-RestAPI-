@@ -2,6 +2,7 @@ package com.boluwatifeproj.fashionblog.service;
 
 import com.boluwatifeproj.fashionblog.exception.PostNotFoundException;
 import com.boluwatifeproj.fashionblog.model.Comment;
+import com.boluwatifeproj.fashionblog.model.Like;
 import com.boluwatifeproj.fashionblog.model.Post;
 import org.springframework.http.ResponseEntity;
 

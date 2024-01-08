@@ -1,11 +1,14 @@
 package com.boluwatifeproj.fashionblog.service;
 
 import com.boluwatifeproj.fashionblog.exception.PostNotFoundException;
+import com.boluwatifeproj.fashionblog.model.Like;
 import com.boluwatifeproj.fashionblog.model.Post;
 import com.boluwatifeproj.fashionblog.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +23,14 @@ public class PostServiceImpl implements PostService{
     }
     @Override
     public ResponseEntity<Post> savePost(Post post) {
-        Post post1 = postRepository.save(post);
-        return new ResponseEntity<>(post1, HttpStatus.CREATED);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()
+        && authentication.getAuthorities().stream().anyMatch(role->role.getAuthority().equals("ROLE_ADMIN"))){
+            Post createdPost = postRepository.save(post);
+            return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
     @Override
     public ResponseEntity<List<Post>> getAllPosts() {
@@ -66,4 +75,5 @@ public class PostServiceImpl implements PostService{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }
